@@ -1,0 +1,23 @@
+{
+  "name": "Steth-IO-SDK",
+  "version": "0.1.0",
+  "summary": "A short description of Steth-IO-SDK.",
+  "description": "Think: What does it do? Why did you write it? What is the focus?",
+  "homepage": "https://github.com/StratoScientific/Steth-IO-SDK-iOS",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "dhinesh-raju": "dhinesh.raju@ionixxtech.com"
+  },
+  "source": {
+    "git": "https://github.com/StratoScientific/Steth-IO-SDK-iOS.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "source_files": "Steth-IO-SDK/Classes/**/*.swift",
+  "vendored_frameworks": "Steth-IO-SDK/Frameworks/StethIO.framework"
+}

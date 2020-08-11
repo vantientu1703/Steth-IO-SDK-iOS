@@ -1,0 +1,6 @@
+
+target 'Steth-IO-SDK_Example' do
+  use_frameworks!
+  pod 'Steth-IO-SDK', :path => '../'
+ 
+end

@@ -1,0 +1,16 @@
+PODS:
+  - Steth-IO-SDK (0.1.0)
+
+DEPENDENCIES:
+  - Steth-IO-SDK (from `../`)
+
+EXTERNAL SOURCES:
+  Steth-IO-SDK:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Steth-IO-SDK: 5e8a59f977bc01d9221d4c65f1d0d0c65a525244
+
+PODFILE CHECKSUM: 9b9dd0077e12c348ec708781f9fa6bc842ae0594
+
+COCOAPODS: 1.9.1
