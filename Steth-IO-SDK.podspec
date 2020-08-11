@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Steth-IO-SDK'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'A short description of Steth-IO-SDK.'
 
 # This description is used to generate tags and improve search results.
@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
   # s.dependency 'AFNetworking', '~> 2.3'
   
  
-     s.vendored_frameworks = 'Steth-IO-SDK/Frameworks/StethIO.framework'
-    # s.dependency 'AFNetworking', '~> 2.3'
+  s.vendored_frameworks = 'Steth-IO-SDK/Frameworks/StethIO.framework'
+  # s.dependency 'AFNetworking', '~> 2.3'
   
 end

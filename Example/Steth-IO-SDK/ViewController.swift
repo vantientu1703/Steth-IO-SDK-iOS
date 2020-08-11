@@ -9,7 +9,6 @@
 import UIKit
 import StethIO
 
-
 class ViewController: UIViewController {
 
     @IBOutlet weak var errorLabel: UILabel!
@@ -18,13 +17,13 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            
-         try? StethIOManager.instance.apiKey(apiKey: "ypAPq9sohb1SHmKmlJFZdjSmbBmFmwMQWBK+I24AQlHzJYf7MDDpyAM6bouj2vib")
-        //StethIOManager
+
         // Do any additional setup after loading the view.
     }
  
     @IBAction func startButtonAction(_ sender: Any) {
+        errorLabel.text = ""
+        errorLabel.textColor = .red
         guard let button = sender as? UIButton else {
             return
         }
@@ -43,7 +42,7 @@ class ViewController: UIViewController {
             RecordAudio.default.delegate = self
             
             //this is initializer method
-            try StethIOManager.instance.apiKey(apiKey: "ypAPq9sohb1SHmKmlJFZdjSmbBmFmwMQWBK+I24AQlHzJYf7MDDpyAM6bouj2vib")
+            try StethIOManager.instance.apiKey(apiKey: "aOHHz2FoX03+2T3ziP9X9YEFZAxKnlAJ6qx4ybl614vLjgjFOOfNZt1ShuCTIKsC")
             
             //here we need to process the biquad files and apply filter
             try StethIOManager.instance.prepare()
@@ -71,6 +70,11 @@ extension ViewController : RecordAudioDelegate {
 //            let sam = sample.pointee
             //here is the process audio method
             try StethIOManager.instance.processStethAudio(sample: sample, count: frame)
+            DispatchQueue.main.async {
+                self.errorLabel.textColor = .green
+                self.errorLabel.text = "Recording=====> \(sample.pointee)"
+            }
+           
             print(sample.pointee)
             print(StethIOManager.instance.examType)
         }catch {
