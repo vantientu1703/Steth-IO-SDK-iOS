@@ -1,24 +1,44 @@
 # Steth-IO-SDK
 
-[![CI Status](https://img.shields.io/travis/dhinesh-raju/Steth-IO-SDK.svg?style=flat)](https://travis-ci.org/dhinesh-raju/Steth-IO-SDK)
-[![Version](https://img.shields.io/cocoapods/v/Steth-IO-SDK.svg?style=flat)](https://cocoapods.org/pods/Steth-IO-SDK)
-[![License](https://img.shields.io/cocoapods/l/Steth-IO-SDK.svg?style=flat)](https://cocoapods.org/pods/Steth-IO-SDK)
-[![Platform](https://img.shields.io/cocoapods/p/Steth-IO-SDK.svg?style=flat)](https://cocoapods.org/pods/Steth-IO-SDK)
-
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
+- The recording frequency must be 44.1khz because the filters are designed in such way.
+- The heart/lung filters will work as expected only with Steth IO hardware.
 
 ## Installation
 
-To install it, simply add the following line to your Podfile:
+To install simply add the following line to your Podfile:
 
 ```ruby
 pod 'Steth-IO-SDK', :git => 'https://github.com/StratoScientific/Steth-IO-SDK-iOS.git'
 ```
 
+
+### Using SDK
+1. In ViewController
+    ```
+    //Initializer
+    try StethIOManager.instance.apiKey(apiKey: "YOUR_API_KEY")
+    
+    //here we need to process the biquad files and apply filter
+    try StethIOManager.instance.prepare()
+    
+    //set the filter mode to heart/lung
+    StethIOManager.instance.examType = .heart //for heart
+    StethIOManager.instance.examType = .lung //for lungs
+    
+    //here is the process audio method
+    //sample - array of float samples
+    //count - sample count
+    try StethIOManager.instance.processStethAudio(sample: sample, count: frame)
+    
+    //Stop Filtering
+    // this is to dealloc filter objects
+    StethIOManager.instance.stopFiltering()
+    ```
 ## Author
 
 dhinesh-raju, dhinesh.raju@ionixxtech.com
