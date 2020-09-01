@@ -13,8 +13,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-Steth-IO-SDK is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+To install it, simply add the following line to your Podfile:
 
 ```ruby
 pod 'Steth-IO-SDK', :git => 'https://github.com/StratoScientific/Steth-IO-SDK-iOS.git'
