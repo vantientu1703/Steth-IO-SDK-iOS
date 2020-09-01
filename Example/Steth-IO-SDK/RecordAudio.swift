@@ -26,19 +26,23 @@ final class RecordAudio: NSObject {
     private var audioUnit:   AudioUnit?     = nil
     
     private var micPermission   =  false
-    private var sessionActive   =  false
+    public var sessionActive   =  false
     public var isRecording     =  false
     
     public   var sampleRate : Double = 44100.0    // default audio sample rate
-    private  var input: UnsafeMutablePointer<Float>!
+    public  var input: UnsafeMutablePointer<Float>!
     private  var output: UnsafeMutablePointer<Float>!
-    
+    private  let circBuffSize = 32768        // lock-free circular fifo/buffer size
+       private   var circBuffer   = [Float](repeating: 0, count: 32768)  // for incoming samples
     private  var hwSRate = 48000.0   // guess of device hardware sample rate
     private  var micPermissionDispatchToken = 0
     private  var interrupted = false     // for restart from audio interruption notification
     var numberOfChannels: Int       =  1
 //    /// keep in-memory on audio buffer
-//    var buffers: Array<UnsafeMutablePointer<Float>>!
+    var buffers: Array<UnsafeMutablePointer<Float>>!
+    private   var circInIdx  : Int =  0
+       private  var audioLevel : Float  = 0.0
+       
 //
 //
     private var maxFramesPerSlice:UInt32?
@@ -62,8 +66,8 @@ final class RecordAudio: NSObject {
         }
         guard let au = self.audioUnit
             else { return }
-        input = UnsafeMutablePointer<Float>.allocate(capacity: 1000*100)
-        output = UnsafeMutablePointer<Float>.allocate(capacity: 1000*100)
+        input = UnsafeMutablePointer<Float>.allocate(capacity: 48000*20)
+        output = UnsafeMutablePointer<Float>.allocate(capacity:  48000*20)
 //        buffers = Array<UnsafeMutablePointer<Float>>()
         
         err = AudioUnitInitialize(au)
@@ -92,32 +96,30 @@ final class RecordAudio: NSObject {
                                 // check for this flag and call from UI loop if needed
                             } else {
                                // to do
-                                // dispatch in main/UI thread an alert
+                                // dispatch in main/`UI thread an alert
                                 //   informing that mic permission is not switched on
                             }
                         })
                     }
                 }
                 if micPermission == false { return }
-                try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.allowBluetoothA2DP,.allowAirPlay,.allowBluetooth])
-                //                try audioSession.setCategory(AVAudioSession.Category.record)
+                try audioSession.setCategory(.playAndRecord,mode: .measurement , options: [.allowBluetoothA2DP,.allowAirPlay,])
                 // choose 44100 or 48000 based on hardware rate
                 // sampleRate = 44100.0
-                var preferredIOBufferDuration:TimeInterval = 58 / 1000      // 5.8 milliseconds = 256 samples
+                let preferredIOBufferDuration:TimeInterval = 58 / 1000      // 5.8 milliseconds = 256 samples
                 hwSRate = audioSession.sampleRate           // get native hardware rate
-                if hwSRate == 48000.0 { sampleRate = 48000.0 }  // set session to hardware rate
-                if hwSRate == 48000.0 { preferredIOBufferDuration = 0.053 }
+//                if hwSRate == 48000.0 { sampleRate = 48000.0 }  // set session to hardware rate
+//                if hwSRate == 48000.0 { preferredIOBufferDuration = 0.053 }
                 let desiredSampleRate = sampleRate
                 try audioSession.setPreferredSampleRate(desiredSampleRate)
                 try audioSession.setPreferredIOBufferDuration(preferredIOBufferDuration)
-                
+//                try audioSession.overrideOutputAudioPort(.speaker)
                 NotificationCenter.default.addObserver(
                     forName: AVAudioSession.interruptionNotification,
                     object: nil,
                     queue: nil,
                     using: myAudioSessionInterruptionHandler )
-                
-                try audioSession.setActive(true)
+                try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
                 sessionActive = true
             } catch /* let error as NSError */ {
                 // handle error here
@@ -222,16 +224,16 @@ final class RecordAudio: NSObject {
                                      &inputcallbackStruct,
                                      UInt32(MemoryLayout<AURenderCallbackStruct>.size))
         
-//        var outputcallbackStruct
-//            = AURenderCallbackStruct(inputProc: renderCallback,
-//                                     inputProcRefCon:
-//                UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
+        var outputcallbackStruct
+            = AURenderCallbackStruct(inputProc: renderCallback,
+                                     inputProcRefCon:
+                UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
         
-//        osErr = AudioUnitSetProperty(au,AudioUnitPropertyID(kAudioUnitProperty_SetRenderCallback),
-//                                     AudioUnitScope(kAudioUnitScope_Input),
-//                                     0,
-//                                     &outputcallbackStruct,
-//                                     UInt32(MemoryLayout<AURenderCallbackStruct>.size))
+        osErr = AudioUnitSetProperty(au,AudioUnitPropertyID(kAudioUnitProperty_SetRenderCallback),
+                                     AudioUnitScope(kAudioUnitScope_Input),
+                                     0,
+                                     &outputcallbackStruct,
+                                     UInt32(MemoryLayout<AURenderCallbackStruct>.size))
         
     }
     //MARK:- AU  Callback
@@ -275,40 +277,44 @@ final class RecordAudio: NSObject {
         return noErr
     }
     /// https://stackoverflow.com/questions/33715628/aurendercallback-in-swift
-//    let renderCallback: AURenderCallback = { (
-//        inRefCon,
-//        ioActionFlags,
-//        inTimeStamp,
-//        inBusNumber,
-//        frameCount,
-//        ioData ) -> OSStatus in
-//
-//        let audioObject = unsafeBitCast(inRefCon, to: RecordAudio.self)
-//        if audioObject.isPause {
-//            // no action
-//            return noErr
-//        }
-//        /// clear the audio to send microphone
-//        if let data = ioData {
-//            var audioBufferListPtr = UnsafeMutableAudioBufferListPointer.init(data)
-////            audioBufferListPtr.forEach { (ab) in
-////                if let d = ab.mData{
-////                    memset(ab.mData, 0, MemoryLayout<UInt32>.size * Int(ab.mDataByteSize))
-////                }
-////            }
-//            //                let buf0: UnsafeMutablePointer<Float>?
-//            if  audioBufferListPtr.count > 0 {
-//                var buf0: UnsafeMutableRawPointer? = audioBufferListPtr[0].mData
-////                memcpy(buf0, audioObject.output, frameCount.sizeOf);
-//                memset(buf0, 0, frameCount.sizeOf);
-//            }
-//
-//            //send to bluetooth
-////            memcpy(audioObject.output,audioObject.input , frameCount.sizeOf);
-//
-//        }
-//        return noErr
-//    }
+    let renderCallback: AURenderCallback = { (
+        inRefCon,
+        ioActionFlags,
+        inTimeStamp,
+        inBusNumber,
+        frameCount,
+        ioData ) -> OSStatus in
+
+        let audioObject = unsafeBitCast(inRefCon, to: RecordAudio.self)
+        if audioObject.isPause {
+            // no action
+            return noErr
+        }
+        /// clear the audio to send microphone
+        if let data = ioData {
+             var audioBufferListPtr = UnsafeMutableAudioBufferListPointer.init(data)
+                           let mBuffers : AudioBuffer = audioBufferListPtr[0]
+                     audioBufferListPtr.forEach { (ab) in
+                         if let d = ab.mData{
+                             memset(ab.mData, 0, MemoryLayout<UInt32>.size * Int(ab.mDataByteSize))
+                         }
+                         // make a loop
+         //                ab.mdata[i] = ringbuffer.read()
+         //                memcpy(ab.mData, audioObject.input, Int(frameCount) *  MemoryLayout<Float>.size)
+                         let fdata = ab.mData?.assumingMemoryBound(to: Float.self)
+//                         audioObject.delegate?.playOutput(fdata, frame: Int(frameCount))
+                        
+                        memcpy(fdata,audioObject.input , Int(frameCount) * 4);
+                        var lastVal = audioObject.input[ Int(frameCount) - 1];
+                        fdata?[Int(frameCount)] = lastVal;
+                     }
+            //send to bluetooth
+//            print("audi inp==\(audioObject.input.pointee)")
+//            memcpy(audioObject.output,audioObject.input , frameCount.sizeOf);
+//            print("audi out==\(audioObject.output.pointee)")
+        }
+        return noErr
+    }
     //MARK:- Microphone buffer
     func processMicrophoneBuffer(   // process RemoteIO Buffer from mic input
         inputDataList : UnsafeMutablePointer<AudioBufferList>,
@@ -320,20 +326,18 @@ final class RecordAudio: NSObject {
         let inputDataPtr = UnsafeMutableAudioBufferListPointer(inputDataList)
         let mBuffers : AudioBuffer = inputDataPtr[0]
         let count = Int(frameCount)
-
-//        let df = DateFormatter()
-//        df.dateFormat = "hh:mm ss"
-//        print("object", hashValue, df.string(from: Date()))
-        // Microphone Input Analysis
-//         let data      = UnsafePointer<Int16>(mBuffers.mData)
         let bufferPointer = UnsafeMutableRawPointer(mBuffers.mData)
+
         if let unsafeNewAudioFloat = bufferPointer?.assumingMemoryBound(to: Float.self){
 //            buffers.append(unsafeNewAudioFloat)
+           
             self.delegate?.recordAudioRenderInputModification(unsafeNewAudioFloat, frame: count)
-            memcpy(input, unsafeNewAudioFloat, frameCount.sizeOf)
+            memcpy(input, unsafeNewAudioFloat, Int(frameCount) * 4)
             self.delegate?.recordAudioRenderInputSample(unsafeNewAudioFloat, frame: count, audioLevel: 0)
+            
         }
-    }
+    
+}
      func stopRecording() {
         if let aunit = self.audioUnit {
             AudioUnitUninitialize(aunit)

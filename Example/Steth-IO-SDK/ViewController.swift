@@ -10,17 +10,17 @@ import UIKit
 import StethIO
 
 class ViewController: UIViewController {
-
+    
     @IBOutlet weak var errorLabel: UILabel!
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
- 
+    
     @IBAction func startButtonAction(_ sender: Any) {
         errorLabel.text = ""
         errorLabel.textColor = .red
@@ -39,6 +39,7 @@ class ViewController: UIViewController {
         let ok = SpeackerRoute()
         do {
             try ok.setInputToBuiltInMicAndNoiseCancel(inputType: .builtInMic)
+            RecordAudio.default.sessionActive = true
             RecordAudio.default.delegate = self
             
             //this is initializer method
@@ -47,41 +48,41 @@ class ViewController: UIViewController {
             //here we need to process the biquad files and apply filter
             try StethIOManager.instance.prepare()
             
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                StethIOManager.instance.examType = .heart
+                
+                RecordAudio.default.startRecording()
+                button.setTitle("Stop", for: .normal)
+            }
             //this is used to change the heart/lung type
-            StethIOManager.instance.examType = .lung
             
-            RecordAudio.default.startRecording()
-             button.setTitle("Stop", for: .normal)
         }
         catch {
             self.errorLabel.text = error.localizedDescription
             print(error)
         }
-       
+        
     }
     
 }
 
 extension ViewController : RecordAudioDelegate {
-   
+    
     
     func recordAudioRenderInputModification(_ sample: UnsafeMutablePointer<Float>, frame: Int) {
         do{
-//            let sam = sample.pointee
             //here is the process audio method
             try StethIOManager.instance.processStethAudio(sample: sample, count: frame)
             DispatchQueue.main.async {
                 self.errorLabel.textColor = .green
-                self.errorLabel.text = "Recording=====> \(sample.pointee)"
+                self.errorLabel.text = "Recording=====> \(StethIOManager.instance.examType)"
             }
-           
-            print(sample.pointee)
-            print(StethIOManager.instance.examType)
+            
         }catch {
             self.errorLabel.text = error.localizedDescription
             print(error)
         }
-      
+        
     }
     
     func recordAudioRenderInputSample(_ sample: UnsafeMutablePointer<Float>, frame: Int, audioLevel: Float) {

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,8 +12,8 @@
 		72FE2A366724A781083A66CA0EA7420F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		BB9770815BF6519761BF09C7967E2C79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		BFCE8E57007ED05424A5A1DA6DD2E586 /* Pods-Steth-IO-SDK_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 76717789448455765E6CCA6D0FE8D92D /* Pods-Steth-IO-SDK_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E0BF6C5924E2D58600CA31F8 /* StethIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0BF6C5724E2D57700CA31F8 /* StethIO.framework */; };
-		E0BF6C5A24E2D58600CA31F8 /* StethIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0BF6C5724E2D57700CA31F8 /* StethIO.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E004566824EFF66F0004DC17 /* StethIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E08E54BD24E4406700562ACE /* StethIO.framework */; platformFilter = ios; };
+		E004566924EFF66F0004DC17 /* StethIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E08E54BD24E4406700562ACE /* StethIO.framework */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EE96ACE10C1348B19C2887924BFCFE54 /* Steth-IO-SDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F47B491C1FA65104E64BD8ABFBCAD48 /* Steth-IO-SDK-dummy.m */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +34,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E0BF6C5A24E2D58600CA31F8 /* StethIO.framework in Embed Frameworks */,
+				E004566924EFF66F0004DC17 /* StethIO.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,7 +59,7 @@
 		AF443AA356D10456454250664EC5E038 /* Pods-Steth-IO-SDK_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Steth-IO-SDK_Example-Info.plist"; sourceTree = "<group>"; };
 		B29BC2BCB86D8955B5AF5A4772F57185 /* Steth_IO_SDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Steth_IO_SDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB8027711B2E575978A6257A4EB69D5A /* Pods_Steth_IO_SDK_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Steth_IO_SDK_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E0BF6C5724E2D57700CA31F8 /* StethIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = StethIO.framework; sourceTree = "<group>"; };
+		E08E54BD24E4406700562ACE /* StethIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = StethIO.framework; sourceTree = "<group>"; };
 		E9F480EBF4A749B9D8A051D90236EA22 /* Pods-Steth-IO-SDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Steth-IO-SDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F02D6D50D284026CB5751DC980D0D18E /* Steth-IO-SDK-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Steth-IO-SDK-Info.plist"; sourceTree = "<group>"; };
 		F20589B1604B45ADC2E7FAC0AA6D5BC1 /* Steth-IO-SDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "Steth-IO-SDK.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -82,7 +82,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB9770815BF6519761BF09C7967E2C79 /* Foundation.framework in Frameworks */,
-				E0BF6C5924E2D58600CA31F8 /* StethIO.framework in Frameworks */,
+				E004566824EFF66F0004DC17 /* StethIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,7 +197,7 @@
 		E0BF6C5424E26ECA00CA31F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E0BF6C5724E2D57700CA31F8 /* StethIO.framework */,
+				E08E54BD24E4406700562ACE /* StethIO.framework */,
 			);
 			name = Frameworks;
 			path = "Steth-IO-SDK/Frameworks";
@@ -270,7 +270,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1160;
 				TargetAttributes = {
 					47C32CF75D17F4956F3B808153B4C91D = {
 						ProvisioningStyle = Manual;
@@ -395,7 +395,8 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
@@ -405,7 +406,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 73DEFF5C79D34F933AA66A722DC07A27 /* Steth-IO-SDK.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -420,7 +420,11 @@
 				INFOPLIST_FILE = "Target Support Files/Steth-IO-SDK/Steth-IO-SDK-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/Steth-IO-SDK/Steth-IO-SDK.modulemap";
 				PRODUCT_MODULE_NAME = Steth_IO_SDK;
 				PRODUCT_NAME = Steth_IO_SDK;
@@ -438,7 +442,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 16DBCD1E9989B48C17B13F71B0B0EEA8 /* Steth-IO-SDK.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -453,7 +456,11 @@
 				INFOPLIST_FILE = "Target Support Files/Steth-IO-SDK/Steth-IO-SDK-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/Steth-IO-SDK/Steth-IO-SDK.modulemap";
 				PRODUCT_MODULE_NAME = Steth_IO_SDK;
 				PRODUCT_NAME = Steth_IO_SDK;
@@ -472,9 +479,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E9F480EBF4A749B9D8A051D90236EA22 /* Pods-Steth-IO-SDK_Example.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
@@ -489,7 +495,11 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-Steth-IO-SDK_Example/Pods-Steth-IO-SDK_Example-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-Steth-IO-SDK_Example/Pods-Steth-IO-SDK_Example.modulemap";
 				OTHER_LDFLAGS = "";
@@ -501,6 +511,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -511,9 +522,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9E1C9B03E706F4D0C03A96B0C7325D38 /* Pods-Steth-IO-SDK_Example.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
@@ -528,7 +538,11 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-Steth-IO-SDK_Example/Pods-Steth-IO-SDK_Example-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-Steth-IO-SDK_Example/Pods-Steth-IO-SDK_Example.modulemap";
 				OTHER_LDFLAGS = "";
@@ -540,6 +554,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
