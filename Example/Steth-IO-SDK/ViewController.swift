@@ -43,7 +43,7 @@ class ViewController: UIViewController {
             RecordAudio.default.delegate = self
             
             //this is initializer method
-            try StethIOManager.instance.apiKey(apiKey: "aOHHz2FoX03+2T3ziP9X9YEFZAxKnlAJ6qx4ybl614vLjgjFOOfNZt1ShuCTIKsC")
+            try StethIOManager.instance.apiKey(apiKey: "YOUR_API_KEY")
             
             //here we need to process the biquad files and apply filter
             try StethIOManager.instance.prepare()

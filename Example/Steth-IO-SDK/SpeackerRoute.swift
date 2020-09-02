@@ -54,7 +54,7 @@ class SpeackerRoute{
         
     }
     
-    func currentRouteIsTinnyBuiltInSpeaker() -> Bool {
+    static func currentRouteIsTinnyBuiltInSpeaker() -> Bool {
        let session = AVAudioSession.sharedInstance()
         var foundOnPhoneSpeaker = false
         var foundBlueTooth = false

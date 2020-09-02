@@ -284,7 +284,7 @@ final class RecordAudio: NSObject {
         inBusNumber,
         frameCount,
         ioData ) -> OSStatus in
-
+        
         let audioObject = unsafeBitCast(inRefCon, to: RecordAudio.self)
         if audioObject.isPause {
             // no action
@@ -294,19 +294,23 @@ final class RecordAudio: NSObject {
         if let data = ioData {
              var audioBufferListPtr = UnsafeMutableAudioBufferListPointer.init(data)
                            let mBuffers : AudioBuffer = audioBufferListPtr[0]
-                     audioBufferListPtr.forEach { (ab) in
-                         if let d = ab.mData{
-                             memset(ab.mData, 0, MemoryLayout<UInt32>.size * Int(ab.mDataByteSize))
-                         }
-                         // make a loop
-         //                ab.mdata[i] = ringbuffer.read()
-         //                memcpy(ab.mData, audioObject.input, Int(frameCount) *  MemoryLayout<Float>.size)
-                         let fdata = ab.mData?.assumingMemoryBound(to: Float.self)
-//                         audioObject.delegate?.playOutput(fdata, frame: Int(frameCount))
-                        
-                        memcpy(fdata,audioObject.input , Int(frameCount) * 4);
-                        var lastVal = audioObject.input[ Int(frameCount) - 1];
-                        fdata?[Int(frameCount)] = lastVal;
+            audioBufferListPtr.forEach { (ab) in
+                if let d = ab.mData{
+                    memset(ab.mData, 0, MemoryLayout<UInt32>.size * Int(ab.mDataByteSize))
+                }
+                // make a loop
+                //                ab.mdata[i] = ringbuffer.read()
+                //                memcpy(ab.mData, audioObject.input, Int(frameCount) *  MemoryLayout<Float>.size)
+                let fdata = ab.mData?.assumingMemoryBound(to: Float.self)
+                //                         audioObject.delegate?.playOutput(fdata, frame: Int(frameCount))
+                
+                if !SpeackerRoute.currentRouteIsTinnyBuiltInSpeaker() {
+                    memcpy(fdata,audioObject.input , Int(frameCount) * 4);
+                    var lastVal = audioObject.input[ Int(frameCount) - 1];
+                    fdata?[Int(frameCount)] = lastVal;
+                }
+                
+                       
                      }
             //send to bluetooth
 //            print("audi inp==\(audioObject.input.pointee)")
