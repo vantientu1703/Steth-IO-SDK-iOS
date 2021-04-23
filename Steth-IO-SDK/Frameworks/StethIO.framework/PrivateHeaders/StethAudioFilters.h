@@ -14,7 +14,7 @@
 
 extern const int kUseHeartFilters;
 extern const int kUseLungFilters;
-extern const double kAudioFrequencyExact;
+
 
 typedef enum {BEAT_STATUS_IDLE, BEAT_STATUS_IN_PROGRESS, BEAT_STATUS_FOUND} BeatStatus_t;
 
@@ -50,14 +50,14 @@ double Butterworth100to150HzBandPassOn1024SampleRate2Pole(double inSample);
 
 
 void stethFilter_NoiseCancel(float* mainBuffer, float* otherBuffer, int frames, float* outBuffer);
-float stethFilter_getApppropriateGainHeart(float* buffer, long frames);
+float stethFilter_getAppropriateGainHeart(float* buffer, long frames);
 
 void stethFilter_copyRawSamplesForHeartGain(float *buffer, unsigned long frames);
 
 void stethFilter_adaptHeartGain(float *rawInput, float *filteredIo, long frames);
 
 
-float stethFilter_getApppropriateGainLung(float* buffer, long frames);
+float stethFilter_getAppropriateGainLung(float* buffer, long frames);
 void stethFilter_runHeartLungGainControlOnBuffer(float* buffer, float* auxBuffer, long frames, int heartFilter); // for large buffers, mimics the live application of gain.
 
 void stethFilter_runAutoGainCheckOnBuffer(float* buffer, float* graphicsBuffer, long frames, long heartMode); // For large buffer file read, etc - calls autoGainCheckBuffer lots
@@ -78,8 +78,6 @@ void stethFilter_queueAudio(float *newAudio, long numSamples);
 
 void stethFilter_resetGainControlAndDelay(void);
 void stethFilters_allowGainControlToStart(void);
-void stethFilter_setLungGainFactor(double zeroToOne);
-void stethFilter_setHeartGainFactor(double zeroToOne);
 
 float* stethFilter_calculateAssociativeNoise(float* ioBuffer, long frames, float* outAverageGain); // mallocs a gain for every sample
 void stethFilter_applyAssociativeNoise(float* ioBuffer, long frames, float* gainValues);
@@ -105,6 +103,32 @@ void setActiveNoiseCancelState(int onOff);
 
 void initializeAudioProcessing(void);
 void processAudio(float * samples, int numSamples, int isHeartMode, glsteth_filter* filter);
+//void processAudioSimple(float * samples, int numSamples, int isHeartMode, glsteth_filter* filter);
+
+void displayStatistics(float *samples, int numSamples);
+
+// simple recording - only takes up to first 3 minutes of audio sent to it before a clear.
+void recordRawAudio(float * samples, int numSamples);
+void clearRecordedAudio(void);
+int numSamplesRecorded(void);
+float* recordedSamples(void);
+
+
+void stethFilter_setProcessingSampleRate(double fs);
+double stethFilter_getProcessingSampleRate(void);
+
+//Automatic heart gain will never drop below this setting
+//values of 2 to 10 are probably best
+void stethFilter_setHeartMinimumGain(double setting);
+
+//This sets the target average level for the automatic lung gain.
+//levels between 0.1 and 1.0 are probably best
+void stethFilter_setLungTargetLevel(double setting);
+
+//This is the target peak level for the automatic heart gain, prior to limiting. A level greater than 1.0 is no problem,
+//although by 4.0 the distortion might be audible.
+//This can be set from 0.5 to 4.0, settings from 1.0 to 3.0 are probably best
+void stethFilter_setHeartTargetLevel(double setting);
 
 #endif /* defined(__Steth_io__StethAudioFilters__) */
 

@@ -6,7 +6,17 @@ double calculateQFromOctaveWidth(double octaveWidth);
 void calculateBiquadPeak(double freqC, double freqTot, double Q, double peakGain,
                         double* a0, double* a1, double* a2, double* b1, double* b2);
 
+void calculateLP2(double freqC, double freqTot, double Q,
+                  double *coeffs);
 
+void calculateBW4Section(double freqC, double freqTot, int section,
+                         double *coeffs);
+
+void calculateHP2(double freqC, double freqTot, double Q,
+                  double *coeffs);
+
+void calculateBP2(double freqC, double freqTot, double Q,
+                  double *coeffs);
 
 
 //const int N = 10;
@@ -17,8 +27,6 @@ void calculateBiquadPeak(double freqC, double freqTot, double Q, double peakGain
 // This treat as opaque object that holds all state for a biquad filter
 //------------
 struct glsteth_filter {
-    float* soundBuffer; // original raw buffer
-    int buffer_last_index; // original raw buffer
     // coefficients.
     double* coeffs; // [5 * N]
     double* delays; // [2 * N + 2]
@@ -34,8 +42,7 @@ typedef struct glsteth_filter glsteth_filter;
 // Create the object and keep until you are done
 glsteth_filter* glsteth_filter_NEW(void);
 void glsteth_filter_FREE(glsteth_filter* obj);
-float* glsteth_filterSoundBuffer(  glsteth_filter* outObj);
-int glsteth_filterSoundBufferSize(  glsteth_filter* outObj);
+void glsteth_filter_OS_FREE(glsteth_filter* obj); // OS dependent. On iOS in iosDSP
 
 // removes all filter stages.
 void glsteth_filter_clear(glsteth_filter* obj);
@@ -47,30 +54,13 @@ void glsteth_filter_addBiquad(glsteth_filter* filter, double a0, double a1, doub
 // NOTE: use the same filter for adjacent blocks so everything is smooth.
 // ALLOWS inSound and outSound to be the same buffer, as there is a copy done internally.
 void glsteth_filter_run(glsteth_filter* filter, float* inSound, float* outSound, long frames); // OS dependent. On iOS in iosDSP
+void glsteth_filter_runD(glsteth_filter* obj, double* inSound, double* outSound, long frames); // OS dependent. On iOS in iosDSP
 
 void glsteth_filter_allocateDoublesFor(glsteth_filter* filter, long frames);
 
 // YOU MUST pass 1024 bytes of memory in, then make a platform string on the way out.
 void glsteth_filter_signature(glsteth_filter* obj, char* emptyStringCap1024);
 
-
-
-
-double calculateQFromOctaveWidth(double octaveWidth);
-void calculateBiquadPeak(double freqC, double freqTot, double Q, double peakGain,
-                        double* a0, double* a1, double* a2, double* b1, double* b2);
-
-void calculateLP2(double freqC, double freqTot, double Q,
-                  double *coeffs);
-
-void calculateBW4Section(double freqC, double freqTot, int section,
-                         double *coeffs);
-
-void calculateHP2(double freqC, double freqTot, double Q,
-                  double *coeffs);
-
-void calculateBP2(double freqC, double freqTot, double Q,
-                  double *coeffs);
 
 //A lightweight single biquad
 

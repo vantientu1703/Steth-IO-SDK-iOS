@@ -9,6 +9,7 @@
 import Foundation
 import AudioUnit
 import AVFoundation
+import StethIO
 
 let  kAudioFrequencyExact:Double = 44100.0;
 
@@ -29,7 +30,56 @@ extension RecordAudio{
         return volume
     }
     
-   
+    func write()->URL?{
+        let sampleCount = StethIOManager.instance.numStethSamplesRecorded()
+        let buffers:UnsafeMutablePointer<Float> = StethIOManager.instance.recordedStethAudioSamples()
+        defer {
+            StethIOManager.instance.clearRecordedStethAudio()
+        }
+        //let buffers:UnsafeMutablePointer<Float> = glsteth_filterSoundBuffer(obj)
+        //let sampleCount = glsteth_filterSoundBufferSize(obj);
+        //        let sampleCount = Int(kAudioFrequencyExact * endTime)
+      return  write(buffers: buffers, sampleCount: Int(sampleCount));
+    }
+    func write(buffers: UnsafeMutablePointer<Float>, sampleCount:Int)-> URL? {
+        //https://stackoverflow.com/questions/42178958/write-array-of-floats-to-a-wav-audio-file-in-swift
+
+        var docPath = ""
+        
+        let dm = DirectoryManager(folderType: DirectoryManager.LocalFolder.examAudio)
+        docPath = dm.path
+        let url = URL.init(fileURLWithPath: "\(docPath)exam-\(Int.random(in: 0...10000)).wav")
+        
+        let SAMPLE_RATE =  RecordAudio.default.sampleRate
+        
+        let outputFormatSettings = [
+            AVFormatIDKey:kAudioFormatLinearPCM,
+            AVLinearPCMBitDepthKey:32,
+            AVLinearPCMIsFloatKey: true,
+//              AVLinearPCMIsBigEndianKey: false,
+            AVSampleRateKey: SAMPLE_RATE,
+            AVNumberOfChannelsKey: 1
+            ] as [String : Any]
+        
+        let audioFile = try? AVAudioFile(forWriting: url, settings: outputFormatSettings, commonFormat: AVAudioCommonFormat.pcmFormatFloat32, interleaved: true)
+        
+        let bufferFormat = AVAudioFormat(settings: outputFormatSettings)
+        
+        let outputBuffer = AVAudioPCMBuffer(pcmFormat: bufferFormat!, frameCapacity: AVAudioFrameCount(sampleCount))
+        
+        // i had my samples in doubles, so convert then write
+        for i in 0..<sampleCount {
+            outputBuffer?.floatChannelData!.pointee[i] = buffers[i]
+        }
+        outputBuffer?.frameLength = AVAudioFrameCount( sampleCount)
+        do{
+            try audioFile?.write(from: outputBuffer!)
+            
+        } catch let error as NSError {
+            print("error:", error.localizedDescription)
+        }
+        return url;
+    }
     
 }
 

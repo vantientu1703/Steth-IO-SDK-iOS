@@ -19,7 +19,7 @@ void glrate_setBPMErrorThreshold(double threshold); // 0.1 to 1.0 please . 1.0 m
 void glrate_setBPMWindow(double window);
 double glrate_currentHearRate(float* samples, long numSamples);
 void glrate_resetHeartRate(void);
-
+void downSample(float* samples,int numSamples,float rate);
 
 
 #endif /* defined(__Steth_io__StethHeartRate__) */

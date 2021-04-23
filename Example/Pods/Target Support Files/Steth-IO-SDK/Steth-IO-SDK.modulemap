@@ -1,6 +1,0 @@
-framework module Steth_IO_SDK {
-  umbrella header "Steth-IO-SDK-umbrella.h"
-
-  export *
-  module * { export * }
-}

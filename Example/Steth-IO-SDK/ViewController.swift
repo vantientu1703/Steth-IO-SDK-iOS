@@ -28,8 +28,13 @@ class ViewController: UIViewController {
             return
         }
         if RecordAudio.default.isRecording {
+            let url = RecordAudio.default.write()
+            if let u = url {
+                writeToFiles(u)
+            }
             button.setTitle("Start", for: .normal)
             RecordAudio.default.stopRecording()
+            self.errorLabel.text = ""
             RecordAudio.default.delegate = nil
             // this is to dealloc objects
             StethIOManager.instance.stopFiltering()
@@ -39,22 +44,23 @@ class ViewController: UIViewController {
         let ok = SpeackerRoute()
         do {
             try ok.setInputToBuiltInMicAndNoiseCancel(inputType: .builtInMic)
-            RecordAudio.default.sessionActive = true
             RecordAudio.default.delegate = self
-            
+            RecordAudio.default.sampleRate = 44100
             //this is initializer method
-            try StethIOManager.instance.apiKey(apiKey: "YOUR_API_KEY")
+            try StethIOManager.instance.apiKey(apiKey: "aOHHz2FoX03+2T3ziP9X9YEFZAxKnlAJ6qx4ybl614vLjgjFOOfNZt1ShuCTIKsC")
+            
+            //this is used to change the heart/lung type
+            StethIOManager.instance.examType = .heart
+
             
             //here we need to process the biquad files and apply filter
             try StethIOManager.instance.prepare()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                StethIOManager.instance.examType = .heart
                 
                 RecordAudio.default.startRecording()
                 button.setTitle("Stop", for: .normal)
             }
-            //this is used to change the heart/lung type
             
         }
         catch {
@@ -64,6 +70,14 @@ class ViewController: UIViewController {
         
     }
     
+    func writeToFiles(_ url: URL){
+        if let _ = try? Data(contentsOf: url) {
+            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            DispatchQueue.main.async {
+                self.present(activityViewController, animated: true, completion: nil)
+            }
+        }
+    }
 }
 
 extension ViewController : RecordAudioDelegate {
@@ -73,6 +87,8 @@ extension ViewController : RecordAudioDelegate {
         do{
             //here is the process audio method
             try StethIOManager.instance.processStethAudio(sample: sample, count: frame)
+            StethIOManager.instance.recordStethAudioSamples(samples: sample, numSamples: Int32(frame))
+
             DispatchQueue.main.async {
                 self.errorLabel.textColor = .green
                 self.errorLabel.text = "Recording=====> \(StethIOManager.instance.examType)"

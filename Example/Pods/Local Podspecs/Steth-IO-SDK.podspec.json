@@ -1,6 +1,6 @@
 {
   "name": "Steth-IO-SDK",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "summary": "A short description of Steth-IO-SDK.",
   "description": "Think: What does it do? Why did you write it? What is the focus?",
   "homepage": "https://github.com/StratoScientific/Steth-IO-SDK-iOS",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/StratoScientific/Steth-IO-SDK-iOS.git",
-    "tag": "0.1.0"
+    "tag": "0.1.1"
   },
   "platforms": {
     "ios": "11.0"

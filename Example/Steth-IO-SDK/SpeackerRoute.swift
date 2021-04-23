@@ -1,6 +1,6 @@
 //
 //  SpeackerRoute.swift
-//  StethIOGraph
+//  Steth-IO-Patient
 //
 //  Created by Alex on 06/12/19.
 //  Copyright © 2019 AlexAppadurai. All rights reserved.
@@ -14,29 +14,28 @@ class SpeackerRoute{
     
     
     // You must set a preferred number of input channels only after setting the audio session’s category and mode and activating the session.
-    func setInputToBuiltInMicAndNoiseCancel(inputType: AVAudioSession.Port)  throws{
+    func setInputToBuiltInMicAndNoiseCancel(inputType: AVAudioSession.Port = AVAudioSession.Port.builtInMic)  throws{
+ 
         let session = AVAudioSession.sharedInstance();
-        try session.setCategory(.playAndRecord, mode: .measurement, options: [.allowBluetoothA2DP,.allowAirPlay])
-//        try session.setActive(true)
-       
+        try session.setCategory(.playAndRecord, mode: AVAudioSession.Mode.measurement, options: [.allowBluetoothA2DP,.allowAirPlay,.allowBluetooth])
+        try session.setActive(true)
 
-        print("About to set input which is currently: %@",session.availableInputs)
+        print("About to set input which is currently: %@",session.currentRoute.inputs)
         //NSLog(@"About to set input which is currently: %@", session.currentRoute.inputs);
         
         // Get the set of input ports that are available for routing
         // each item is an AVAudioSessionPortDescription
         guard  let portDescription = (session.availableInputs?.filter { (pd) -> Bool in
-            print("type===>\(pd.portName)")
             return pd.portType == inputType
         }.first) else {
             throw NSError.init(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "portDescription not available : "])
-
         }
-        print("selectef===>\(portDescription)")
-        try session.setPreferredInput(portDescription)
-//        try session.setpr
+        if session.inputDataSource != portDescription {
+              try session.setPreferredInput(portDescription)
+        }
+      
         // get available input source from current available input
-        if let availableInputs = ( session.currentRoute.inputs.filter { (pd) -> Bool in
+        if let availableInputs = (session.currentRoute.inputs.filter { (pd) -> Bool in
             return pd.portType == portDescription.portType
         }.first) {
             if let ds = availableInputs.selectedDataSource?.location, ds == AVAudioSession.Location.lower{
@@ -48,33 +47,19 @@ class SpeackerRoute{
             print("inputPort was NOT set. Perhaps they are on a phone call! : \(portDescription.description)")
         }
         
-       
+        guard let lower = ( (portDescription.dataSources ?? []).filter { (dsd) -> Bool in
+            /// datasource descriptoin
+            if let l = dsd.location {
+                return l == AVAudioSession.Location.lower
+            }
+            return false
+        }.first ) else {
+            print("source data is already in av session location lower")
+            return;
+        }
         
-//        try session.setActive(true)
-        
+        try portDescription.setPreferredDataSource(lower)
+    
     }
     
-    static func currentRouteIsTinnyBuiltInSpeaker() -> Bool {
-       let session = AVAudioSession.sharedInstance()
-        var foundOnPhoneSpeaker = false
-        var foundBlueTooth = false
-        for aPort in session.currentRoute.outputs {
-            let portType = aPort.portType
-            if (portType == .builtInSpeaker) || (portType == .builtInReceiver) {
-                foundOnPhoneSpeaker = true // we will get feedback...
-            }
-            if (portType == .bluetoothA2DP) || (portType == .bluetoothLE) || (portType == .airPlay) {
-                foundBlueTooth = true // we should not stop audio.
-            }
-        }
-
-        if foundBlueTooth {
-            return false // bluetooth likely fine
-        }
-        if foundOnPhoneSpeaker {
-            return true // tinny speaker AVAudioSessionPortBuiltInSpeaker AVAudioSessionPortBuiltInReceiver
-        }
-
-        return false // otherwise ok I guess.
-    }
 }
