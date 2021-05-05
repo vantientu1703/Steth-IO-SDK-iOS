@@ -61,7 +61,7 @@ The `API_KEY` in the example application will only work for the example applicat
 
 ## Author
 
-dhinesh-raju, dhinesh.raju@ionixxtech.com
+StethIO, stethio@ionixxtech.com
 
 ## License
 
