@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		23AB47A4096C6286BD8AE495 /* libPods-Steth-IO-SDK_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD6FC9DE80EC852A0DE4157 /* libPods-Steth-IO-SDK_Example.a */; };
+		72B80B8A2E3CD9BE4437C269 /* Pods_Steth_IO_SDK_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E229AE8CB6416F72A1D81DA7 /* Pods_Steth_IO_SDK_Example.framework */; };
 		E0BF6C4224E269AE00CA31F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0BF6C3924E269AE00CA31F8 /* Main.storyboard */; };
 		E0BF6C4324E269AE00CA31F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0BF6C3A24E269AE00CA31F8 /* LaunchScreen.storyboard */; };
 		E0BF6C4624E269AE00CA31F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0BF6C3E24E269AE00CA31F8 /* Assets.xcassets */; };
@@ -40,7 +40,6 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6E09008E2DB239EAAF6D467A /* Pods-Steth-IO-SDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Steth-IO-SDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-Steth-IO-SDK_Example/Pods-Steth-IO-SDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		8489EF473312E35AF2EDEA7D /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		8BD6FC9DE80EC852A0DE4157 /* libPods-Steth-IO-SDK_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Steth-IO-SDK_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CACD0435261924B638446551 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		E0BF6C3824E269AD00CA31F8 /* Steth-IO-SDK_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Steth-IO-SDK_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		E0BF6C3924E269AE00CA31F8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -49,6 +48,7 @@
 		E0BF6C4024E269AE00CA31F8 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E0BF6C4124E269AE00CA31F8 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0BF6C4D24E26AE500CA31F8 /* StethIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StethIO.framework; path = "../Steth-IO-SDK/Frameworks/StethIO.framework"; sourceTree = "<group>"; };
+		E229AE8CB6416F72A1D81DA7 /* Pods_Steth_IO_SDK_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Steth_IO_SDK_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +57,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0BF6C5124E26C0500CA31F8 /* StethIO.framework in Frameworks */,
-				23AB47A4096C6286BD8AE495 /* libPods-Steth-IO-SDK_Example.a in Frameworks */,
+				72B80B8A2E3CD9BE4437C269 /* Pods_Steth_IO_SDK_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				E0BF6C4D24E26AE500CA31F8 /* StethIO.framework */,
-				8BD6FC9DE80EC852A0DE4157 /* libPods-Steth-IO-SDK_Example.a */,
+				E229AE8CB6416F72A1D81DA7 /* Pods_Steth_IO_SDK_Example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -405,6 +405,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -429,6 +430,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Steth-IO-SDK/Steth-IO-SDK_Example-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};

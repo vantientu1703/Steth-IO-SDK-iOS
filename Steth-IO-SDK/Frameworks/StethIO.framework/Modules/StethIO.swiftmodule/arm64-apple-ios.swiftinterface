@@ -1,0 +1,812 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target arm64-apple-ios10.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name StethIO
+import AVFoundation
+import AVKit
+import Accelerate
+import AudioUnit
+import CommonCrypto
+import Darwin
+import Foundation
+import GLKit
+import OpenGLES
+@_exported import StethIO
+import StethIOPrivate
+import Swift
+import UIKit
+public struct CFB : StethIO.BlockMode {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: StethIO.CFB.Error, b: StethIO.CFB.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public let options: StethIO.BlockModeOption
+  public init(iv: Swift.Array<Swift.UInt8>)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping StethIO.CipherOperationOnBlock) throws -> StethIO.CipherModeWorker
+}
+final public class SHA3 {
+  final public let blockSize: Swift.Int
+  final public let digestLength: Swift.Int
+  final public let markByte: Swift.UInt8
+  public enum Variant {
+    case sha224, sha256, sha384, sha512, keccak224, keccak256, keccak384, keccak512
+    public var outputLength: Swift.Int {
+      get
+    }
+    public static func == (a: StethIO.SHA3.Variant, b: StethIO.SHA3.Variant) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public init(variant: StethIO.SHA3.Variant)
+  final public func calculate(for bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+extension SHA3 : StethIO.Updatable {
+  final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+}
+public protocol ObjectMapper : Swift.Decodable, Swift.Encodable {
+  func mapping(json: Swift.Dictionary<Swift.String, Any>)
+}
+extension ObjectMapper {
+  public func mapping(json: Swift.Dictionary<Swift.String, Any>)
+}
+public struct DynamicObjectMapper {
+  public static func arrayObjectMapper<T>(_ list: [Any]) throws -> [T]? where T : StethIO.ObjectMapper
+  public static func objectMapper<T>(_ object: Swift.Dictionary<Swift.String, Any>) throws -> T where T : StethIO.ObjectMapper
+}
+extension ObjectMapper {
+  public static func map<T>(data: Foundation.Data) throws -> T where T : StethIO.ObjectMapper
+  public func clone<T>() throws -> T? where T : StethIO.ObjectMapper
+  public func cloneToAnotherObject<T>(_ handler: ((Swift.Dictionary<Swift.String, Any>?) -> Swift.Dictionary<Swift.String, Any>)? = nil) throws -> T where T : StethIO.ObjectMapper
+  public func json() throws -> Swift.Dictionary<Swift.String, Any>
+  public func data() throws -> Foundation.Data?
+}
+public enum CipherError : Swift.Error {
+  case encrypt
+  case decrypt
+  public static func == (a: StethIO.CipherError, b: StethIO.CipherError) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+public protocol Cipher : AnyObject {
+  var keySize: Swift.Int { get }
+  func encrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  func encrypt(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  func decrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  func decrypt(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+extension Cipher {
+  public func encrypt(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  public func decrypt(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+@_hasMissingDesignatedInitializers final public class AEADChaCha20Poly1305 : StethIO.AEAD {
+  public static let kLen: Swift.Int
+  public static var ivRange: Swift.Range<Swift.Int>
+  public static func encrypt(_ plainText: Swift.Array<Swift.UInt8>, key: Swift.Array<Swift.UInt8>, iv: Swift.Array<Swift.UInt8>, authenticationHeader: Swift.Array<Swift.UInt8>) throws -> (cipherText: Swift.Array<Swift.UInt8>, authenticationTag: Swift.Array<Swift.UInt8>)
+  public static func decrypt(_ cipherText: Swift.Array<Swift.UInt8>, key: Swift.Array<Swift.UInt8>, iv: Swift.Array<Swift.UInt8>, authenticationHeader: Swift.Array<Swift.UInt8>, authenticationTag: Swift.Array<Swift.UInt8>) throws -> (plainText: Swift.Array<Swift.UInt8>, success: Swift.Bool)
+  @objc deinit
+}
+@available(*, renamed: "Digest")
+public typealias Hash = StethIO.Digest
+public struct Digest {
+  public static func md5(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha1(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha224(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha256(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha384(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha512(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha2(_ bytes: Swift.Array<Swift.UInt8>, variant: StethIO.SHA2.Variant) -> Swift.Array<Swift.UInt8>
+  public static func sha3(_ bytes: Swift.Array<Swift.UInt8>, variant: StethIO.SHA3.Variant) -> Swift.Array<Swift.UInt8>
+}
+final public class Scrypt {
+  public init(password: Swift.Array<Swift.UInt8>, salt: Swift.Array<Swift.UInt8>, dkLen: Swift.Int, N: Swift.Int, r: Swift.Int, p: Swift.Int) throws
+  final public func calculate() throws -> [Swift.UInt8]
+  @objc deinit
+}
+extension Array where Element == Swift.UInt8 {
+  public func toBase64() -> Swift.String?
+  public init(base64: Swift.String)
+}
+public protocol AEAD {
+  static var kLen: Swift.Int { get }
+  static var ivRange: Swift.Range<Swift.Int> { get }
+}
+extension Rabbit {
+  convenience public init(key: Swift.String) throws
+  convenience public init(key: Swift.String, iv: Swift.String) throws
+}
+final public class ChaCha20 {
+  public enum Error : Swift.Error {
+    case invalidKeyOrInitializationVector
+    case notSupported
+    public static func == (a: StethIO.ChaCha20.Error, b: StethIO.ChaCha20.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public static let blockSize: Swift.Int
+  final public let keySize: Swift.Int
+  public init(key: Swift.Array<Swift.UInt8>, iv nonce: Swift.Array<Swift.UInt8>) throws
+  @objc deinit
+}
+extension ChaCha20 : StethIO.Cipher {
+  final public func encrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  final public func decrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+extension ChaCha20 {
+  public struct ChaChaEncryptor : StethIO.Cryptor, StethIO.Updatable {
+    public mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+    public func seek(to: Swift.Int) throws
+  }
+}
+extension ChaCha20 {
+  public struct ChaChaDecryptor : StethIO.Cryptor, StethIO.Updatable {
+    public mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = true) throws -> Swift.Array<Swift.UInt8>
+    public func seek(to: Swift.Int) throws
+  }
+}
+extension ChaCha20 : StethIO.Cryptors {
+  final public func makeEncryptor() -> StethIO.Cryptor & StethIO.Updatable
+  final public func makeDecryptor() -> StethIO.Cryptor & StethIO.Updatable
+}
+final public class GCM : StethIO.BlockMode {
+  public enum Mode {
+    case combined
+    case detached
+    public static func == (a: StethIO.GCM.Mode, b: StethIO.GCM.Mode) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  final public let options: StethIO.BlockModeOption
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    case fail
+    public static func == (a: StethIO.GCM.Error, b: StethIO.GCM.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  final public var authenticationTag: Swift.Array<Swift.UInt8>?
+  public init(iv: Swift.Array<Swift.UInt8>, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil, tagLength: Swift.Int = 16, mode: StethIO.GCM.Mode = .detached)
+  convenience public init(iv: Swift.Array<Swift.UInt8>, authenticationTag: Swift.Array<Swift.UInt8>, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil, mode: StethIO.GCM.Mode = .detached)
+  final public func worker(blockSize: Swift.Int, cipherOperation: @escaping StethIO.CipherOperationOnBlock) throws -> StethIO.CipherModeWorker
+  @objc deinit
+}
+extension Blowfish {
+  convenience public init(key: Swift.String, iv: Swift.String, padding: StethIO.Padding = .pkcs7) throws
+}
+@_hasMissingDesignatedInitializers public class BlockDecryptor : StethIO.Cryptor, StethIO.Updatable {
+  public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+  public func seek(to position: Swift.Int) throws
+  @objc deinit
+}
+public struct HKDF {
+  public enum Error : Swift.Error {
+    case invalidInput
+    case derivedKeyTooLong
+    public static func == (a: StethIO.HKDF.Error, b: StethIO.HKDF.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public init(password: Swift.Array<Swift.UInt8>, salt: Swift.Array<Swift.UInt8>? = nil, info: Swift.Array<Swift.UInt8>? = nil, keyLength: Swift.Int? = nil, variant: StethIO.HMAC.Variant = .sha256) throws
+  public func calculate() throws -> Swift.Array<Swift.UInt8>
+}
+public struct CCM {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    case invalidParameter
+    case fail
+    public static func == (a: StethIO.CCM.Error, b: StethIO.CCM.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public let options: StethIO.BlockModeOption
+  public var authenticationTag: Swift.Array<Swift.UInt8>?
+  public init(iv: Swift.Array<Swift.UInt8>, tagLength: Swift.Int, messageLength: Swift.Int, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil)
+  public init(iv: Swift.Array<Swift.UInt8>, tagLength: Swift.Int, messageLength: Swift.Int, authenticationTag: Swift.Array<Swift.UInt8>, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping StethIO.CipherOperationOnBlock) throws -> StethIO.CipherModeWorker
+}
+@_hasMissingDesignatedInitializers public class SpeackerRoute {
+  @objc deinit
+}
+final public class SHA2 {
+  public enum Variant : Swift.RawRepresentable {
+    case sha224, sha256, sha384, sha512
+    public var digestLength: Swift.Int {
+      get
+    }
+    public var blockSize: Swift.Int {
+      get
+    }
+    public typealias RawValue = Swift.Int
+    public var rawValue: StethIO.SHA2.Variant.RawValue {
+      get
+    }
+    public init?(rawValue: StethIO.SHA2.Variant.RawValue)
+  }
+  public init(variant: StethIO.SHA2.Variant)
+  final public func calculate(for bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+extension SHA2 : StethIO.Updatable {
+  final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+}
+public struct CTR {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: StethIO.CTR.Error, b: StethIO.CTR.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public let options: StethIO.BlockModeOption
+  public init(iv: Swift.Array<Swift.UInt8>, counter: Swift.Int = 0)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping StethIO.CipherOperationOnBlock) throws -> StethIO.CipherModeWorker
+}
+extension AES : StethIO.Cryptors {
+  final public func makeEncryptor() throws -> StethIO.Cryptor & StethIO.Updatable
+  final public func makeDecryptor() throws -> StethIO.Cryptor & StethIO.Updatable
+}
+@_hasMissingDesignatedInitializers final public class Checksum {
+  @objc deinit
+}
+extension Checksum {
+  public static func crc32(_ message: Swift.Array<Swift.UInt8>, seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32
+  public static func crc32c(_ message: Swift.Array<Swift.UInt8>, seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32
+  public static func crc16(_ message: Swift.Array<Swift.UInt8>, seed: Swift.UInt16? = nil) -> Swift.UInt16
+}
+public enum PKCS7 {
+}
+extension String {
+  public var bytes: Swift.Array<Swift.UInt8> {
+    get
+  }
+  public func md5() -> Swift.String
+  public func sha1() -> Swift.String
+  public func sha224() -> Swift.String
+  public func sha256() -> Swift.String
+  public func sha384() -> Swift.String
+  public func sha512() -> Swift.String
+  public func sha3(_ variant: StethIO.SHA3.Variant) -> Swift.String
+  public func crc32(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.String
+  public func crc32c(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.String
+  public func crc16(seed: Swift.UInt16? = nil) -> Swift.String
+  public func encrypt(cipher: StethIO.Cipher) throws -> Swift.String
+  public func encryptToBase64(cipher: StethIO.Cipher) throws -> Swift.String?
+  public func authenticate<A>(with authenticator: A) throws -> Swift.String where A : StethIO.Authenticator
+}
+final public class HMAC : StethIO.Authenticator {
+  public enum Error : Swift.Error {
+    case authenticateError
+    case invalidInput
+    public static func == (a: StethIO.HMAC.Error, b: StethIO.HMAC.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public enum Variant {
+    case sha1, sha256, sha384, sha512, md5
+    public static func == (a: StethIO.HMAC.Variant, b: StethIO.HMAC.Variant) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public init(key: Swift.Array<Swift.UInt8>, variant: StethIO.HMAC.Variant = .md5)
+  final public func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+extension Data {
+  public func checksum() -> Swift.UInt16
+  public func md5() -> Foundation.Data
+  public func sha1() -> Foundation.Data
+  public func sha224() -> Foundation.Data
+  public func sha256() -> Foundation.Data
+  public func sha384() -> Foundation.Data
+  public func sha512() -> Foundation.Data
+  public func sha3(_ variant: StethIO.SHA3.Variant) -> Foundation.Data
+  public func crc32(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Foundation.Data
+  public func crc32c(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Foundation.Data
+  public func crc16(seed: Swift.UInt16? = nil) -> Foundation.Data
+  public func encrypt(cipher: StethIO.Cipher) throws -> Foundation.Data
+  public func decrypt(cipher: StethIO.Cipher) throws -> Foundation.Data
+  public func authenticate(with authenticator: StethIO.Authenticator) throws -> Foundation.Data
+}
+extension Data {
+  public init(hex: Swift.String)
+  public var bytes: Swift.Array<Swift.UInt8> {
+    get
+  }
+  public func toHexString() -> Swift.String
+}
+public protocol CipherModeWorker {
+  var cipherOperation: StethIO.CipherOperationOnBlock { get }
+  var additionalBufferSize: Swift.Int { get }
+  mutating func encrypt(block plaintext: Swift.ArraySlice<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  mutating func decrypt(block ciphertext: Swift.ArraySlice<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+}
+public protocol BlockModeWorker : StethIO.CipherModeWorker {
+  var blockSize: Swift.Int { get }
+}
+public protocol CounterModeWorker : StethIO.CipherModeWorker {
+  associatedtype Counter
+  var counter: Self.Counter { get set }
+}
+public protocol SeekableModeWorker : StethIO.CipherModeWorker {
+  mutating func seek(to position: Swift.Int) throws
+}
+public protocol StreamModeWorker : StethIO.CipherModeWorker {
+}
+public protocol FinalizingEncryptModeWorker : StethIO.CipherModeWorker {
+  mutating func finalize(encrypt ciphertext: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.ArraySlice<Swift.UInt8>
+}
+public protocol FinalizingDecryptModeWorker : StethIO.CipherModeWorker {
+  @discardableResult
+  mutating func willDecryptLast(bytes ciphertext: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.ArraySlice<Swift.UInt8>
+  mutating func didDecryptLast(bytes plaintext: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.ArraySlice<Swift.UInt8>
+  mutating func finalize(decrypt plaintext: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.ArraySlice<Swift.UInt8>
+}
+extension ChaCha20 {
+  convenience public init(key: Swift.String, iv: Swift.String) throws
+}
+public struct PCBC : StethIO.BlockMode {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: StethIO.PCBC.Error, b: StethIO.PCBC.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public let options: StethIO.BlockModeOption
+  public init(iv: Swift.Array<Swift.UInt8>)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping StethIO.CipherOperationOnBlock) throws -> StethIO.CipherModeWorker
+}
+public class FilterModel : StethIO.ObjectMapper {
+  public init()
+  @objc deinit
+  required public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+final public class SHA1 {
+  public init()
+  final public func calculate(for bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+extension SHA1 : StethIO.Updatable {
+  @discardableResult
+  final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+}
+public protocol Cryptor {
+  mutating func seek(to: Swift.Int) throws
+}
+public struct BlockModeOption : Swift.OptionSet {
+  public let rawValue: Swift.Int
+  public init(rawValue: Swift.Int)
+  public typealias Element = StethIO.BlockModeOption
+  public typealias ArrayLiteralElement = StethIO.BlockModeOption
+  public typealias RawValue = Swift.Int
+}
+final public class AES {
+  public enum Error : Swift.Error {
+    case invalidKeySize
+    case dataPaddingRequired
+    case invalidData
+    public static func == (a: StethIO.AES.Error, b: StethIO.AES.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public enum Variant : Swift.Int {
+    case aes128, aes192, aes256
+    public typealias RawValue = Swift.Int
+    public init?(rawValue: Swift.Int)
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  public static let blockSize: Swift.Int
+  final public let keySize: Swift.Int
+  final public let variant: StethIO.AES.Variant
+  public init(key: Swift.Array<Swift.UInt8>, blockMode: StethIO.BlockMode, padding: StethIO.Padding = .pkcs7) throws
+  @objc deinit
+}
+extension AES : StethIO.Cipher {
+  final public func encrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  final public func decrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+extension Array where Element == Swift.UInt8 {
+  public init(hex: Swift.String)
+  public func toHexString() -> Swift.String
+}
+extension Array where Element == Swift.UInt8 {
+  @available(*, deprecated)
+  public func chunks(size chunksize: Swift.Int) -> Swift.Array<Swift.Array<Element>>
+  public func md5() -> [Element]
+  public func sha1() -> [Element]
+  public func sha224() -> [Element]
+  public func sha256() -> [Element]
+  public func sha384() -> [Element]
+  public func sha512() -> [Element]
+  public func sha2(_ variant: StethIO.SHA2.Variant) -> [Element]
+  public func sha3(_ variant: StethIO.SHA3.Variant) -> [Element]
+  public func crc32(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32
+  public func crc32c(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32
+  public func crc16(seed: Swift.UInt16? = nil) -> Swift.UInt16
+  public func encrypt(cipher: StethIO.Cipher) throws -> [Element]
+  public func decrypt(cipher: StethIO.Cipher) throws -> [Element]
+  public func authenticate<A>(with authenticator: A) throws -> [Element] where A : StethIO.Authenticator
+}
+extension HMAC {
+  convenience public init(key: Swift.String, variant: StethIO.HMAC.Variant = .md5) throws
+}
+final public class Poly1305 : StethIO.Authenticator {
+  public enum Error : Swift.Error {
+    case authenticateError
+    public static func == (a: StethIO.Poly1305.Error, b: StethIO.Poly1305.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public static let blockSize: Swift.Int
+  public init(key: Swift.Array<Swift.UInt8>)
+  final public func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+final public class Blowfish {
+  public enum Error : Swift.Error {
+    case dataPaddingRequired
+    case invalidKeyOrInitializationVector
+    case invalidInitializationVector
+    case invalidBlockMode
+    public static func == (a: StethIO.Blowfish.Error, b: StethIO.Blowfish.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public static let blockSize: Swift.Int
+  final public let keySize: Swift.Int
+  public init(key: Swift.Array<Swift.UInt8>, blockMode: StethIO.BlockMode = CBC(iv: Array<UInt8>(repeating: 0, count: Blowfish.blockSize)), padding: StethIO.Padding) throws
+  @objc deinit
+}
+extension Blowfish : StethIO.Cipher {
+  final public func encrypt<C>(_ bytes: C) throws -> Swift.Array<Swift.UInt8> where C : Swift.Collection, C.Element == Swift.UInt8, C.Index == Swift.Int
+  final public func decrypt<C>(_ bytes: C) throws -> Swift.Array<Swift.UInt8> where C : Swift.Collection, C.Element == Swift.UInt8, C.Index == Swift.Int
+}
+public protocol Authenticator {
+  func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+public struct ECB : StethIO.BlockMode {
+  public let options: StethIO.BlockModeOption
+  public init()
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping StethIO.CipherOperationOnBlock) throws -> StethIO.CipherModeWorker
+}
+@_inheritsConvenienceInitializers final public class CBCMAC : StethIO.CMAC {
+  override final public func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  @objc deinit
+  override public init(key: Swift.Array<Swift.UInt8>) throws
+}
+public struct OFB : StethIO.BlockMode {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: StethIO.OFB.Error, b: StethIO.OFB.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public let options: StethIO.BlockModeOption
+  public init(iv: Swift.Array<Swift.UInt8>)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping StethIO.CipherOperationOnBlock) throws -> StethIO.CipherModeWorker
+}
+public protocol PaddingProtocol {
+  func add(to: Swift.Array<Swift.UInt8>, blockSize: Swift.Int) -> Swift.Array<Swift.UInt8>
+  func remove(from: Swift.Array<Swift.UInt8>, blockSize: Swift.Int?) -> Swift.Array<Swift.UInt8>
+}
+public enum Padding : StethIO.PaddingProtocol {
+  case noPadding, zeroPadding, pkcs7, pkcs5, iso78164
+  public func add(to: Swift.Array<Swift.UInt8>, blockSize: Swift.Int) -> Swift.Array<Swift.UInt8>
+  public func remove(from: Swift.Array<Swift.UInt8>, blockSize: Swift.Int?) -> Swift.Array<Swift.UInt8>
+  public static func == (a: StethIO.Padding, b: StethIO.Padding) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+extension AES {
+  convenience public init(key: Swift.String, iv: Swift.String, padding: StethIO.Padding = .pkcs7) throws
+}
+@objc @_inheritsConvenienceInitializers public class RecordAudio : ObjectiveC.NSObject {
+  public var isRecording: Swift.Bool
+  public var sampleRate: Swift.Double
+  public var isPause: Swift.Bool
+  @objc deinit
+  @objc override dynamic public init()
+}
+public class CMAC : StethIO.Authenticator {
+  public enum Error : Swift.Error {
+    case wrongKeyLength
+    public static func == (a: StethIO.CMAC.Error, b: StethIO.CMAC.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public init(key: Swift.Array<Swift.UInt8>) throws
+  public func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+public enum PKCS5 {
+}
+extension PKCS5 {
+  public struct PBKDF2 {
+    public enum Error : Swift.Error {
+      case invalidInput
+      case derivedKeyTooLong
+      public static func == (a: StethIO.PKCS5.PBKDF2.Error, b: StethIO.PKCS5.PBKDF2.Error) -> Swift.Bool
+      public var hashValue: Swift.Int {
+        get
+      }
+      public func hash(into hasher: inout Swift.Hasher)
+    }
+    public init(password: Swift.Array<Swift.UInt8>, salt: Swift.Array<Swift.UInt8>, iterations: Swift.Int = 4096, keyLength: Swift.Int? = nil, variant: StethIO.HMAC.Variant = .sha256) throws
+    public func calculate() throws -> Swift.Array<Swift.UInt8>
+  }
+}
+public struct CBC : StethIO.BlockMode {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: StethIO.CBC.Error, b: StethIO.CBC.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public let options: StethIO.BlockModeOption
+  public init(iv: Swift.Array<Swift.UInt8>)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping StethIO.CipherOperationOnBlock) throws -> StethIO.CipherModeWorker
+}
+final public class MD5 {
+  public init()
+  final public func calculate(for bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+extension MD5 : StethIO.Updatable {
+  final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+}
+extension String {
+  public func decryptBase64ToString(cipher: StethIO.Cipher) throws -> Swift.String
+  public func decryptBase64(cipher: StethIO.Cipher) throws -> Swift.Array<Swift.UInt8>
+}
+public protocol StethIOManagerDelegate : AnyObject {
+  func heartExamBPM(bpm: Swift.Double)
+  func savedAudioSamples(url: Foundation.URL)
+}
+@objc @_inheritsConvenienceInitializers public class StethIOManager : ObjectiveC.NSObject {
+  public enum ExamType : Swift.String {
+    case heart
+    case lung
+    public typealias RawValue = Swift.String
+    public init?(rawValue: Swift.String)
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum SaveSampleTypes {
+    case rawSamples, processedSamples, none
+    public static func == (a: StethIO.StethIOManager.SaveSampleTypes, b: StethIO.StethIOManager.SaveSampleTypes) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public var sampleRate: Swift.Double
+  public var examType: StethIO.StethIOManager.ExamType {
+    get
+    set
+  }
+  public var sampleType: StethIO.StethIOManager.SaveSampleTypes
+  public var isRecording: Swift.Bool {
+    get
+  }
+  public var graphView: StethIO.GraphViewController?
+  weak public var delegate: StethIO.StethIOManagerDelegate?
+  @objc override dynamic public init()
+  public func setupGraphView(graphView: UIKit.UIView, in controller: UIKit.UIViewController)
+  public func apiKey(apiKey: Swift.String) throws
+  public func prepare() throws
+  public func stopFiltering()
+  public func startRecording() throws
+  public func stopRecording()
+  public func processStethAudio(sample: Swift.UnsafeMutablePointer<Swift.Float>, count: Swift.Int) throws
+  public func recordStethAudioSamples(samples: Swift.UnsafeMutablePointer<Swift.Float>, numSamples: Swift.Int32)
+  public func numStethSamplesRecorded() -> Swift.Int32
+  public func recordedStethAudioSamples() -> Swift.UnsafeMutablePointer<Swift.Float>
+  public func clearRecordedStethAudio()
+  @objc deinit
+}
+public protocol _UInt8Type {
+}
+extension UInt8 : StethIO._UInt8Type {
+}
+extension UInt8 {
+  public func bits() -> [StethIO.Bit]
+  public func bits() -> Swift.String
+}
+public protocol Updatable {
+  mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool) throws -> Swift.Array<Swift.UInt8>
+  mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool, output: (Swift.Array<Swift.UInt8>) -> Swift.Void) throws
+}
+extension Updatable {
+  public mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false, output: (Swift.Array<Swift.UInt8>) -> Swift.Void) throws
+  public mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+  public mutating func update(withBytes bytes: Swift.Array<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+  public mutating func update(withBytes bytes: Swift.Array<Swift.UInt8>, isLast: Swift.Bool = false, output: (Swift.Array<Swift.UInt8>) -> Swift.Void) throws
+  public mutating func finish(withBytes bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  public mutating func finish(withBytes bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  public mutating func finish() throws -> Swift.Array<Swift.UInt8>
+  public mutating func finish(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, output: (Swift.Array<Swift.UInt8>) -> Swift.Void) throws
+  public mutating func finish(withBytes bytes: Swift.Array<Swift.UInt8>, output: (Swift.Array<Swift.UInt8>) -> Swift.Void) throws
+  public mutating func finish(output: (Swift.Array<Swift.UInt8>) -> Swift.Void) throws
+}
+@objc @_inheritsConvenienceInitializers public class GraphViewController : GLKit.GLKViewController {
+  @objc override dynamic public func viewDidLoad()
+  @objc override dynamic public func glkView(_ view: GLKit.GLKView, drawIn rect: CoreGraphics.CGRect)
+  @objc deinit
+  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @objc required dynamic public init?(coder: Foundation.NSCoder)
+}
+@objc @_hasMissingDesignatedInitializers public class StethIOGraphView : GLKit.GLKView {
+  @objc override dynamic public func draw(_ rect: CoreGraphics.CGRect)
+  @objc deinit
+  @objc override dynamic public init(frame: CoreGraphics.CGRect, context: OpenGLES.EAGLContext)
+}
+extension PKCS5 {
+  public struct PBKDF1 {
+    public enum Error : Swift.Error {
+      case invalidInput
+      case derivedKeyTooLong
+      public static func == (a: StethIO.PKCS5.PBKDF1.Error, b: StethIO.PKCS5.PBKDF1.Error) -> Swift.Bool
+      public var hashValue: Swift.Int {
+        get
+      }
+      public func hash(into hasher: inout Swift.Hasher)
+    }
+    public enum Variant {
+      case md5, sha1
+      public static func == (a: StethIO.PKCS5.PBKDF1.Variant, b: StethIO.PKCS5.PBKDF1.Variant) -> Swift.Bool
+      public var hashValue: Swift.Int {
+        get
+      }
+      public func hash(into hasher: inout Swift.Hasher)
+    }
+    public init(password: Swift.Array<Swift.UInt8>, salt: Swift.Array<Swift.UInt8>, variant: StethIO.PKCS5.PBKDF1.Variant = .sha1, iterations: Swift.Int = 4096, keyLength: Swift.Int? = nil) throws
+    public func calculate() -> Swift.Array<Swift.UInt8>
+  }
+}
+public typealias CipherOperationOnBlock = (Swift.ArraySlice<Swift.UInt8>) -> Swift.Array<Swift.UInt8>?
+public protocol BlockMode {
+  var options: StethIO.BlockModeOption { get }
+  func worker(blockSize: Swift.Int, cipherOperation: @escaping StethIO.CipherOperationOnBlock) throws -> StethIO.CipherModeWorker
+}
+public enum Bit : Swift.Int {
+  case zero
+  case one
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+final public class Rabbit {
+  public enum Error : Swift.Error {
+    case invalidKeyOrInitializationVector
+    public static func == (a: StethIO.Rabbit.Error, b: StethIO.Rabbit.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public static let ivSize: Swift.Int
+  public static let keySize: Swift.Int
+  public static let blockSize: Swift.Int
+  final public var keySize: Swift.Int {
+    get
+  }
+  convenience public init(key: Swift.Array<Swift.UInt8>) throws
+  public init(key: Swift.Array<Swift.UInt8>, iv: Swift.Array<Swift.UInt8>?) throws
+  @objc deinit
+}
+extension Rabbit : StethIO.Cipher {
+  final public func encrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  final public func decrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+public protocol Cryptors : AnyObject {
+  func makeEncryptor() throws -> StethIO.Cryptor & StethIO.Updatable
+  func makeDecryptor() throws -> StethIO.Cryptor & StethIO.Updatable
+  static func randomIV(_ blockSize: Swift.Int) -> Swift.Array<Swift.UInt8>
+}
+extension Cryptors {
+  public static func randomIV(_ count: Swift.Int) -> Swift.Array<Swift.UInt8>
+}
+extension StethIO.CFB.Error : Swift.Equatable {}
+extension StethIO.CFB.Error : Swift.Hashable {}
+extension StethIO.SHA3.Variant : Swift.Equatable {}
+extension StethIO.SHA3.Variant : Swift.Hashable {}
+extension StethIO.CipherError : Swift.Equatable {}
+extension StethIO.CipherError : Swift.Hashable {}
+extension StethIO.ChaCha20.Error : Swift.Equatable {}
+extension StethIO.ChaCha20.Error : Swift.Hashable {}
+extension StethIO.GCM.Mode : Swift.Equatable {}
+extension StethIO.GCM.Mode : Swift.Hashable {}
+extension StethIO.GCM.Error : Swift.Equatable {}
+extension StethIO.GCM.Error : Swift.Hashable {}
+extension StethIO.HKDF.Error : Swift.Equatable {}
+extension StethIO.HKDF.Error : Swift.Hashable {}
+extension StethIO.CCM : StethIO.BlockMode {}
+extension StethIO.CCM.Error : Swift.Equatable {}
+extension StethIO.CCM.Error : Swift.Hashable {}
+extension StethIO.SHA2.Variant : Swift.Equatable {}
+extension StethIO.SHA2.Variant : Swift.Hashable {}
+extension StethIO.CTR : StethIO.BlockMode {}
+extension StethIO.CTR.Error : Swift.Equatable {}
+extension StethIO.CTR.Error : Swift.Hashable {}
+extension StethIO.HMAC.Error : Swift.Equatable {}
+extension StethIO.HMAC.Error : Swift.Hashable {}
+extension StethIO.HMAC.Variant : Swift.Equatable {}
+extension StethIO.HMAC.Variant : Swift.Hashable {}
+extension StethIO.PCBC.Error : Swift.Equatable {}
+extension StethIO.PCBC.Error : Swift.Hashable {}
+extension StethIO.AES.Error : Swift.Equatable {}
+extension StethIO.AES.Error : Swift.Hashable {}
+extension StethIO.AES.Variant : Swift.Equatable {}
+extension StethIO.AES.Variant : Swift.Hashable {}
+extension StethIO.AES.Variant : Swift.RawRepresentable {}
+extension StethIO.Poly1305.Error : Swift.Equatable {}
+extension StethIO.Poly1305.Error : Swift.Hashable {}
+extension StethIO.Blowfish.Error : Swift.Equatable {}
+extension StethIO.Blowfish.Error : Swift.Hashable {}
+extension StethIO.OFB.Error : Swift.Equatable {}
+extension StethIO.OFB.Error : Swift.Hashable {}
+extension StethIO.Padding : Swift.Equatable {}
+extension StethIO.Padding : Swift.Hashable {}
+extension StethIO.CMAC.Error : Swift.Equatable {}
+extension StethIO.CMAC.Error : Swift.Hashable {}
+extension StethIO.PKCS5.PBKDF2.Error : Swift.Equatable {}
+extension StethIO.PKCS5.PBKDF2.Error : Swift.Hashable {}
+extension StethIO.CBC.Error : Swift.Equatable {}
+extension StethIO.CBC.Error : Swift.Hashable {}
+extension StethIO.StethIOManager.ExamType : Swift.Equatable {}
+extension StethIO.StethIOManager.ExamType : Swift.Hashable {}
+extension StethIO.StethIOManager.ExamType : Swift.RawRepresentable {}
+extension StethIO.StethIOManager.SaveSampleTypes : Swift.Equatable {}
+extension StethIO.StethIOManager.SaveSampleTypes : Swift.Hashable {}
+extension StethIO.PKCS5.PBKDF1.Error : Swift.Equatable {}
+extension StethIO.PKCS5.PBKDF1.Error : Swift.Hashable {}
+extension StethIO.PKCS5.PBKDF1.Variant : Swift.Equatable {}
+extension StethIO.PKCS5.PBKDF1.Variant : Swift.Hashable {}
+extension StethIO.Bit : Swift.Equatable {}
+extension StethIO.Bit : Swift.Hashable {}
+extension StethIO.Bit : Swift.RawRepresentable {}
+extension StethIO.Rabbit.Error : Swift.Equatable {}
+extension StethIO.Rabbit.Error : Swift.Hashable {}
