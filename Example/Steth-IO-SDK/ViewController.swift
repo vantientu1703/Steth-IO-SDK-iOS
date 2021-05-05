@@ -1,110 +1,122 @@
 //
 //  ViewController.swift
-//  Example
+//  SDKTest
 //
-//  Created by Alex on 18/05/20.
-//  Copyright © 2020 StethIO. All rights reserved.
+//  Created by naveen on 23/04/21.
 //
 
 import UIKit
 import StethIO
-
+import AVFoundation
 class ViewController: UIViewController {
-    
-    @IBOutlet weak var errorLabel: UILabel!
-    
-    
-    
+
+    @IBOutlet weak var graphView: UIView!
+    @IBOutlet weak var samplesPickerView: UIPickerView!
+    @IBOutlet weak var modePickerView: UIPickerView!
+    var stethManager: StethIOManager!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
+        requestPermission()
+        setupStethIOManager()
     }
     
-    @IBAction func startButtonAction(_ sender: Any) {
-        errorLabel.text = ""
-        errorLabel.textColor = .red
-        guard let button = sender as? UIButton else {
-            return
+    private func setupStethIOManager() {
+        self.stethManager = StethIOManager.init()
+        stethManager.delegate = self
+        stethManager.sampleType = .none
+        stethManager.examType = .heart
+        stethManager.setupGraphView(graphView: graphView, in: self)
+    }
+    
+    
+    private func requestPermission() {
+        AVAudioSession.sharedInstance().requestRecordPermission { (granted) in
+            //handle negative scenario here
         }
-        if RecordAudio.default.isRecording {
-            let url = RecordAudio.default.write()
-            if let u = url {
-                writeToFiles(u)
-            }
-            button.setTitle("Start", for: .normal)
-            RecordAudio.default.stopRecording()
-            self.errorLabel.text = ""
-            RecordAudio.default.delegate = nil
-            // this is to dealloc objects
-            StethIOManager.instance.stopFiltering()
-            return
-        }
-        
-        let ok = SpeackerRoute()
+    }
+    
+    @IBAction func startAction() {
         do {
-            try ok.setInputToBuiltInMicAndNoiseCancel(inputType: .builtInMic)
-            RecordAudio.default.delegate = self
-            RecordAudio.default.sampleRate = 44100
-            //this is initializer method
-            try StethIOManager.instance.apiKey(apiKey: "aOHHz2FoX03+2T3ziP9X9YEFZAxKnlAJ6qx4ybl614vLjgjFOOfNZt1ShuCTIKsC")
+            try stethManager.apiKey(apiKey: "aOHHz2FoX03+2T3ziP9X9YEFZAxKnlAJ6qx4ybl614vLjgjFOOfNZt1ShuCTIKsC")
             
             //this is used to change the heart/lung type
-            StethIOManager.instance.examType = .heart
+            stethManager.examType = .heart
 
             
             //here we need to process the biquad files and apply filter
-            try StethIOManager.instance.prepare()
+            try stethManager.prepare()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                
-                RecordAudio.default.startRecording()
-                button.setTitle("Stop", for: .normal)
-            }
+            //This will start the recording
+            try self.stethManager.startRecording()
             
+            samplesPickerView.isUserInteractionEnabled = false
+
         }
         catch {
-            self.errorLabel.text = error.localizedDescription
             print(error)
         }
         
     }
+    @IBAction func stopAction() {
+        //This will start the recording
+        stethManager.stopRecording()
+        samplesPickerView.isUserInteractionEnabled = true
+    }
+
+
+}
+
+extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView == modePickerView {
+            return 2
+        }
+        return 3
+    }
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView == modePickerView {
+            return row == 0 ? "Heart" : "Lung"
+        }
+        if row == 0{
+            return "None"
+        } else if row == 1{
+            return "Raw Samples"
+        } else {
+            return "Processed Samples"
+        }
+    }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView == modePickerView {
+            self.stethManager.examType = row == 0 ? .heart : .lung
+        }
+        if row == 0{
+            self.stethManager.sampleType = .none
+        } else if row == 1{
+            self.stethManager.sampleType = .rawSamples
+        } else if row == 2 {
+            self.stethManager.sampleType = .processedSamples
+        }
+    }
+}
+
+
+extension ViewController: StethIOManagerDelegate{
+    func heartExamBPM(bpm: Double) {
+        print("BPM\(bpm)")
+    }
     
-    func writeToFiles(_ url: URL){
+    func savedAudioSamples(url: URL) {
         if let _ = try? Data(contentsOf: url) {
             let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
             DispatchQueue.main.async {
                 self.present(activityViewController, animated: true, completion: nil)
             }
+           
         }
-    }
-}
-
-extension ViewController : RecordAudioDelegate {
-    
-    
-    func recordAudioRenderInputModification(_ sample: UnsafeMutablePointer<Float>, frame: Int) {
-        do{
-            //here is the process audio method
-            try StethIOManager.instance.processStethAudio(sample: sample, count: frame)
-            StethIOManager.instance.recordStethAudioSamples(samples: sample, numSamples: Int32(frame))
-
-            DispatchQueue.main.async {
-                self.errorLabel.textColor = .green
-                self.errorLabel.text = "Recording=====> \(StethIOManager.instance.examType)"
-            }
-            
-        }catch {
-            self.errorLabel.text = error.localizedDescription
-            print(error)
-        }
-        
-    }
-    
-    func recordAudioRenderInputSample(_ sample: UnsafeMutablePointer<Float>, frame: Int, audioLevel: Float) {
-        
     }
     
     
 }
-
