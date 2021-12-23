@@ -22,6 +22,7 @@ class ViewController: UIViewController {
     
     private func setupStethIOManager() {
         self.stethManager = StethIOManager.init()
+        stethManager.apiKey = "aOHHz2FoX03+2T3ziP9X9YEFZAxKnlAJ6qx4ybl614vLjgjFOOfNZt1ShuCTIKsC"
         stethManager.delegate = self
         stethManager.sampleType = .none
         stethManager.examType = .heart
@@ -37,8 +38,6 @@ class ViewController: UIViewController {
     
     @IBAction func startAction() {
         do {
-            try stethManager.apiKey(apiKey: "aOHHz2FoX03+2T3ziP9X9YEFZAxKnlAJ6qx4ybl614vLjgjFOOfNZt1ShuCTIKsC")
-            
             //this is used to change the heart/lung type
             stethManager.examType = .heart
 

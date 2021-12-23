@@ -30,6 +30,9 @@ pod 'Steth-IO-SDK', :git => 'https://github.com/StratoScientific/Steth-IO-SDK-iO
     //Initializer
     let stethManager = StethIOManager.init()
     
+    //Enter your API key here
+    stethManager.apiKey = "YOUR_API_KEY"
+    
     //Set delegate to receive bpm and saved samples url
     stethManager.delegate = self
     

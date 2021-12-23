@@ -66,6 +66,15 @@ extension ObjectMapper {
   public func json() throws -> Swift.Dictionary<Swift.String, Any>
   public func data() throws -> Foundation.Data?
 }
+extension Data {
+  public var toString: Swift.String? {
+    get
+  }
+  public var toBase64String: Swift.String? {
+    get
+  }
+  public func json() throws -> Any?
+}
 public enum CipherError : Swift.Error {
   case encrypt
   case decrypt
@@ -631,9 +640,12 @@ public protocol StethIOManagerDelegate : AnyObject {
   }
   public var graphView: StethIO.GraphViewController?
   weak public var delegate: StethIO.StethIOManagerDelegate?
+  public var apiKey: Swift.String {
+    get
+    set
+  }
   @objc override dynamic public init()
   public func setupGraphView(graphView: UIKit.UIView, in controller: UIKit.UIViewController)
-  public func apiKey(apiKey: Swift.String) throws
   public func prepare() throws
   public func stopFiltering()
   public func startRecording() throws

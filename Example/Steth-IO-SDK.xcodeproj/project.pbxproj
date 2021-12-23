@@ -7,24 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		013A32C627708BB70047E142 /* StethIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0BF6C4D24E26AE500CA31F8 /* StethIO.framework */; };
+		013A32C727708BB70047E142 /* StethIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0BF6C4D24E26AE500CA31F8 /* StethIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		72B80B8A2E3CD9BE4437C269 /* Pods_Steth_IO_SDK_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E229AE8CB6416F72A1D81DA7 /* Pods_Steth_IO_SDK_Example.framework */; };
 		E0BF6C4224E269AE00CA31F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0BF6C3924E269AE00CA31F8 /* Main.storyboard */; };
 		E0BF6C4324E269AE00CA31F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0BF6C3A24E269AE00CA31F8 /* LaunchScreen.storyboard */; };
 		E0BF6C4624E269AE00CA31F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0BF6C3E24E269AE00CA31F8 /* Assets.xcassets */; };
 		E0BF6C4824E269AE00CA31F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BF6C4024E269AE00CA31F8 /* ViewController.swift */; };
 		E0BF6C4924E269AE00CA31F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BF6C4124E269AE00CA31F8 /* AppDelegate.swift */; };
-		E0BF6C5124E26C0500CA31F8 /* StethIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0BF6C4D24E26AE500CA31F8 /* StethIO.framework */; };
-		E0BF6C5224E26C0500CA31F8 /* StethIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0BF6C4D24E26AE500CA31F8 /* StethIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		E0BF6C5324E26C0500CA31F8 /* Embed Frameworks */ = {
+		013A32C827708BB70047E142 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E0BF6C5224E26C0500CA31F8 /* StethIO.framework in Embed Frameworks */,
+				013A32C727708BB70047E142 /* StethIO.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,8 +56,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0BF6C5124E26C0500CA31F8 /* StethIO.framework in Frameworks */,
 				72B80B8A2E3CD9BE4437C269 /* Pods_Steth_IO_SDK_Example.framework in Frameworks */,
+				013A32C627708BB70047E142 /* StethIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,8 +163,8 @@
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				E0BF6C5324E26C0500CA31F8 /* Embed Frameworks */,
 				9A268F7DF9FD605512CA49D8 /* [CP] Embed Pods Frameworks */,
+				013A32C827708BB70047E142 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -399,7 +399,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.steth.Steth-IO-SDK-Example";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.steth.Steth-IO-SDK-Eample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Steth-IO-SDK/Steth-IO-SDK_Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -425,7 +425,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.steth.Steth-IO-SDK-Example";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.steth.Steth-IO-SDK-Eample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Steth-IO-SDK/Steth-IO-SDK_Example-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
