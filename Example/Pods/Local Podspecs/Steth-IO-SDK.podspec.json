@@ -16,8 +16,8 @@
     "tag": "0.1.1"
   },
   "platforms": {
-    "ios": "11.0"
+    "ios": "13.0"
   },
   "source_files": "Steth-IO-SDK/Classes/**/*.swift",
-  "vendored_frameworks": "Steth-IO-SDK/Frameworks/StethIO.framework"
+  "vendored_frameworks": "Steth-IO-SDK/Frameworks/StethIO.xcframework"
 }

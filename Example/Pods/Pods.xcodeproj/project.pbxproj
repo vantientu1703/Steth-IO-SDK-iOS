@@ -9,8 +9,9 @@
 /* Begin PBXAggregateTarget section */
 		F88BA809F9D8ECA837490C7EDF559EA8 /* Steth-IO-SDK */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 4CDFFD7BCFBF58DE6D835EC148F1FB7A /* Build configuration list for PBXAggregateTarget "Steth-IO-SDK" */;
+			buildConfigurationList = EFD0543CB4107B25B4FC96142B121573 /* Build configuration list for PBXAggregateTarget "Steth-IO-SDK" */;
 			buildPhases = (
+				7D103994A125497F7FC365AC996B7185 /* [CP] Copy XCFrameworks */,
 			);
 			dependencies = (
 			);
@@ -36,22 +37,23 @@
 
 /* Begin PBXFileReference section */
 		3B3DC82BA3F5A9DBF010A251CF8D76CC /* Pods-Steth-IO-SDK_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Steth-IO-SDK_Example-dummy.m"; sourceTree = "<group>"; };
-		495821A62747F4CC3F8D166E64C9485C /* Steth-IO-SDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Steth-IO-SDK.debug.xcconfig"; sourceTree = "<group>"; };
-		497BAF547106987025456494A4EC5E37 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		470EE810665DB0F86C0B1B2584EBAEA3 /* StethIO.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = StethIO.xcframework; path = "Steth-IO-SDK/Frameworks/StethIO.xcframework"; sourceTree = "<group>"; };
+		4B075F10ECA4B1936793DEA47C48B89D /* Steth-IO-SDK-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Steth-IO-SDK-xcframeworks.sh"; sourceTree = "<group>"; };
+		617375E69422346062B01D543D267363 /* Steth-IO-SDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Steth-IO-SDK.release.xcconfig"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		73D3CCAF5D9307A1A1525936551AAA88 /* Steth-IO-SDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "Steth-IO-SDK.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		76717789448455765E6CCA6D0FE8D92D /* Pods-Steth-IO-SDK_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Steth-IO-SDK_Example-umbrella.h"; sourceTree = "<group>"; };
 		7FE0DA59C342BC4192B9EF659E0B3E4C /* Pods-Steth-IO-SDK_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Steth-IO-SDK_Example-frameworks.sh"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E1C9B03E706F4D0C03A96B0C7325D38 /* Pods-Steth-IO-SDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Steth-IO-SDK_Example.release.xcconfig"; sourceTree = "<group>"; };
 		A87439A9A585233972CF7B5357E661F8 /* Pods-Steth-IO-SDK_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Steth-IO-SDK_Example.modulemap"; sourceTree = "<group>"; };
 		AF443AA356D10456454250664EC5E038 /* Pods-Steth-IO-SDK_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Steth-IO-SDK_Example-Info.plist"; sourceTree = "<group>"; };
-		D9FE80384179A7BB95C6D56A39E6DB4A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		C36B0AB69591CC4647E3FDB152F683F7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
 		DB8027711B2E575978A6257A4EB69D5A /* Pods-Steth-IO-SDK_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Steth-IO-SDK_Example"; path = Pods_Steth_IO_SDK_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E353650910BC2654726B9CE7331972E6 /* StethIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StethIO.framework; path = "Steth-IO-SDK/Frameworks/StethIO.framework"; sourceTree = "<group>"; };
-		E52178C91ABCAF1F961F76284ACF0C01 /* Steth-IO-SDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Steth-IO-SDK.release.xcconfig"; sourceTree = "<group>"; };
+		E0B8D656F6726823EBFBB32E629F3F21 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		E2879F0C0561023DFFD247E15E34ADC1 /* Steth-IO-SDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Steth-IO-SDK.debug.xcconfig"; sourceTree = "<group>"; };
 		E9F480EBF4A749B9D8A051D90236EA22 /* Pods-Steth-IO-SDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Steth-IO-SDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F5514FADC6A9E2E33665964A5A70EB3B /* Pods-Steth-IO-SDK_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Steth-IO-SDK_Example-acknowledgements.plist"; sourceTree = "<group>"; };
-		F722861873148521ADC320EC5BE2B8D2 /* Steth-IO-SDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "Steth-IO-SDK.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		F7E57B9889019E4AE830F5E0CFF486F8 /* Pods-Steth-IO-SDK_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Steth-IO-SDK_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,14 +69,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2384CF22D42D9BEF5911866147B73411 /* Pod */ = {
+		053762214E63AC1F16CB5D61BF50BDAC /* Steth-IO-SDK */ = {
 			isa = PBXGroup;
 			children = (
-				497BAF547106987025456494A4EC5E37 /* LICENSE */,
-				D9FE80384179A7BB95C6D56A39E6DB4A /* README.md */,
-				F722861873148521ADC320EC5BE2B8D2 /* Steth-IO-SDK.podspec */,
+				754A1DE8A53020F19089BC690642402F /* Frameworks */,
+				77BC1090A10ACF9B5BBCC0082882C09E /* Pod */,
+				E97333753E1E3D98909F31F7FEA4C59B /* Support Files */,
 			);
-			name = Pod;
+			name = "Steth-IO-SDK";
+			path = ../..;
 			sourceTree = "<group>";
 		};
 		26857B4B61E2760B0E3BE395B9947A73 /* Products */ = {
@@ -88,7 +91,7 @@
 		326B2C585C3642D7DD93C0CE71726411 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				63449134F5D500F395036D4734C6CAA5 /* Steth-IO-SDK */,
+				053762214E63AC1F16CB5D61BF50BDAC /* Steth-IO-SDK */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
@@ -101,23 +104,22 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		63449134F5D500F395036D4734C6CAA5 /* Steth-IO-SDK */ = {
+		754A1DE8A53020F19089BC690642402F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6A8D3BB3D320829205101050B5F76D95 /* Frameworks */,
-				2384CF22D42D9BEF5911866147B73411 /* Pod */,
-				C7CD05A76EFACB7E0E451892AF53FD5D /* Support Files */,
-			);
-			name = "Steth-IO-SDK";
-			path = ../..;
-			sourceTree = "<group>";
-		};
-		6A8D3BB3D320829205101050B5F76D95 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E353650910BC2654726B9CE7331972E6 /* StethIO.framework */,
+				470EE810665DB0F86C0B1B2584EBAEA3 /* StethIO.xcframework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		77BC1090A10ACF9B5BBCC0082882C09E /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				E0B8D656F6726823EBFBB32E629F3F21 /* LICENSE */,
+				C36B0AB69591CC4647E3FDB152F683F7 /* README.md */,
+				73D3CCAF5D9307A1A1525936551AAA88 /* Steth-IO-SDK.podspec */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		C2F870DA84B65F6E774AAD1D505E2181 /* Targets Support Files */ = {
@@ -126,16 +128,6 @@
 				DA9C6A5947DF65D99887872BF9FB414C /* Pods-Steth-IO-SDK_Example */,
 			);
 			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		C7CD05A76EFACB7E0E451892AF53FD5D /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				495821A62747F4CC3F8D166E64C9485C /* Steth-IO-SDK.debug.xcconfig */,
-				E52178C91ABCAF1F961F76284ACF0C01 /* Steth-IO-SDK.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/Steth-IO-SDK";
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -172,6 +164,17 @@
 			);
 			name = "Pods-Steth-IO-SDK_Example";
 			path = "Target Support Files/Pods-Steth-IO-SDK_Example";
+			sourceTree = "<group>";
+		};
+		E97333753E1E3D98909F31F7FEA4C59B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4B075F10ECA4B1936793DEA47C48B89D /* Steth-IO-SDK-xcframeworks.sh */,
+				E2879F0C0561023DFFD247E15E34ADC1 /* Steth-IO-SDK.debug.xcconfig */,
+				617375E69422346062B01D543D267363 /* Steth-IO-SDK.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/Steth-IO-SDK";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +247,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7D103994A125497F7FC365AC996B7185 /* [CP] Copy XCFrameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Steth-IO-SDK/Steth-IO-SDK-xcframeworks.sh",
+				"${PODS_ROOT}/../../Steth-IO-SDK/Frameworks/StethIO.xcframework",
+			);
+			name = "[CP] Copy XCFrameworks";
+			outputPaths = (
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Steth-IO-SDK/StethIO.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Steth-IO-SDK/Steth-IO-SDK-xcframeworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6153C590CF2C8D5A4F38C3A471EB44F5 /* Sources */ = {
@@ -397,37 +421,6 @@
 			};
 			name = Release;
 		};
-		969A34CC9CB4B6B69C47E1BA8D82BBB6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 495821A62747F4CC3F8D166E64C9485C /* Steth-IO-SDK.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		A401B0CA53453D294B827B40AAE269CA /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E52178C91ABCAF1F961F76284ACF0C01 /* Steth-IO-SDK.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		B4EFE046ACF8F37157F6E322C7FCFC28 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -494,6 +487,37 @@
 			};
 			name = Debug;
 		};
+		F90F437FE609A82D6C46C4600A08BBA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 617375E69422346062B01D543D267363 /* Steth-IO-SDK.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FC58EBFD1EED2A3F2DAF77EEFDCFCB7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2879F0C0561023DFFD247E15E34ADC1 /* Steth-IO-SDK.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -506,20 +530,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CDFFD7BCFBF58DE6D835EC148F1FB7A /* Build configuration list for PBXAggregateTarget "Steth-IO-SDK" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				969A34CC9CB4B6B69C47E1BA8D82BBB6 /* Debug */,
-				A401B0CA53453D294B827B40AAE269CA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		BBBB0A3F5979D1C664CBB9E37F2AC939 /* Build configuration list for PBXNativeTarget "Pods-Steth-IO-SDK_Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				15FD79B677FD89665A1A362F3994A247 /* Debug */,
 				860C22AD75569F4E1691DD337C8B71CA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EFD0543CB4107B25B4FC96142B121573 /* Build configuration list for PBXAggregateTarget "Steth-IO-SDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC58EBFD1EED2A3F2DAF77EEFDCFCB7C /* Debug */,
+				F90F437FE609A82D6C46C4600A08BBA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

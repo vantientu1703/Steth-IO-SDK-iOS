@@ -1,6 +1,0 @@
-framework module StethIO {
-  umbrella header "StethIO.h"
-
-  export *
-  module * { export * }
-}

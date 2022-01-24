@@ -251,7 +251,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Steth-IO-SDK_Example/Pods-Steth-IO-SDK_Example-frameworks.sh",
-				"${PODS_ROOT}/../../Steth-IO-SDK/Frameworks/StethIO.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Steth-IO-SDK/StethIO.framework/StethIO",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (

@@ -1,0 +1,9 @@
+framework module StethIOPrivate {
+    header "biquad.h"
+    header "StethHeartRate.h"
+    header "StethAudioFilters.h"
+    header "GLStethShaders.h"
+    header "GLStethView.h"
+    export *
+ }
+
